@@ -18,6 +18,34 @@ const ambulanceBookingSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  pickupLocation: {
+    type: String,
+    required: [true, 'Please provide the pickup location'],
+  },
+  destination: {
+    type: String,
+    required: [true, 'Please provide the destination'],
+  },
+  patientName: {
+    type: String,
+    required: [true, 'Please provide the patient\'s name'],
+  },
+  patientAge: {
+    type: Number,
+    required: [true, 'Please provide the patient\'s age'],
+  },
+  medicalCondition: {
+    type: String,
+    required: [true, 'Please provide the patient\'s medical condition'],
+  },
+  additionalNotes: {
+    type: String,
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'completed', 'cancelled'],
+    default: 'pending',
+  },
   // Add other fields as needed
 });
 

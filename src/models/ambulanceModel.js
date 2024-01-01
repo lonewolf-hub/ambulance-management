@@ -23,6 +23,22 @@ const ambulanceSchema = new mongoose.Schema({
     type: Number,
     default: 0, // Assuming starting with 0 beds available
   },
+  currentLocation: {
+    type: String,
+    required: [true, 'Please provide the current location of the ambulance'],
+  },
+  driverName: {
+    type: String,
+    required: [true, 'Please provide the name of the ambulance driver'],
+  },
+  driverContact: {
+    type: String,
+    required: [true, 'Please provide the contact number of the ambulance driver'],
+  },
+  isAvailable: {
+    type: Boolean,
+    default: true, // Assuming the ambulance is initially available
+  },
   // Add other fields as needed
 });
 

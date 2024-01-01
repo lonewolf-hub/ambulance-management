@@ -1,6 +1,14 @@
+"use client"
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 const HomeComponent: React.FC = () => {
+  const router = useRouter();
+
+  const handleBookNow = () => {
+    // Use router.push to navigate to the book-ambulance page
+    router.push(`/book-ambulance`);
+  };
   return (
     <div className="bg-secondary-color text-primary-color min-h-screen p-8">
       <div className="max-w-6xl mx-auto">
@@ -17,6 +25,7 @@ const HomeComponent: React.FC = () => {
               <h1 className="text-3xl font-bold mb-2">Your Ambulance Booking Solution</h1>
               <p>Fast and Reliable Service</p>
               <button
+              onClick={handleBookNow}
                 className="bg-primary-color text-white px-4 py-2 mt-4 rounded-md hover:bg-opacity-80 focus:outline-none"
               >
                 Book Now
@@ -68,6 +77,7 @@ const HomeComponent: React.FC = () => {
             </div>
             <div className='flex justify-center'>
               <button
+              onClick={handleBookNow}
                 className="bg-primary-color text-black px-4 py-2 mt-4 rounded-md hover:bg-opacity-80 focus:outline-none"
               >
                 Book Now

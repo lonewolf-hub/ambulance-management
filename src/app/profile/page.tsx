@@ -21,40 +21,58 @@ const UserProfile: React.FC<UserProfileProps> = ({ params }: UserProfileProps) =
   const router = useRouter();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [bookedAmbulances, setBookedAmbulances] = useState<Array<any>>([]);
 
-  const getUserDetails = async () => {
-  try {
-    const userRes = await axios.get('/api/users/user');
-    console.log('User Response:', userRes.data);
+  const getBookedAmbulances = async () => {
+    try {
+      const response = await axios.get('/api/users/getBookedAmbulance');
+      console.log('Booked Ambulances Response:', response.data);
 
-    let userData: UserData | null = null;
-
-    if (userRes.data.data.role === 'admin') {
-      try {
-        const adminRes = await axios.get('/api/admin/admin');
-        console.log('Admin Response:', adminRes.data);
-
-        userData = { ...adminRes.data.data, role: 'admin' };
-      } catch (adminError: any) {
-        if (adminError.response && adminError.response.status === 403) {
-          // Handle 403 (Forbidden) for admin endpoint
-          console.log('User is not an admin');
-          userData = { ...userRes.data.data, role: 'user' };
-        } else {
-          throw adminError;
-        }
-      }
-    } else {
-      userData = { ...userRes.data.data, role: 'user' };
+      // Assuming the response contains an array of booked ambulances
+      setBookedAmbulances(response.data.bookedAmbulances);
+    } catch (error: any) {
+      console.error(error.message);
+      toast.error('Error fetching booked ambulances. Please try again.');
     }
+  };
 
-    console.log('Final UserData:', userData);
-    setUserData(userData);
-  } catch (error: any) {
-    console.error(error.message);
-    toast.error(error.message);
-  }
-};
+  useEffect(() => {
+    getUserDetails();
+    getBookedAmbulances(); // Fetch booked ambulances when the component mounts
+  }, []);
+  const getUserDetails = async () => {
+    try {
+      const userRes = await axios.get('/api/users/user');
+      console.log('User Response:', userRes.data);
+
+      let userData: UserData | null = null;
+
+      if (userRes.data.data.role === 'admin') {
+        try {
+          const adminRes = await axios.get('/api/admin/admin');
+          console.log('Admin Response:', adminRes.data);
+
+          userData = { ...adminRes.data.data, role: 'admin' };
+        } catch (adminError: any) {
+          if (adminError.response && adminError.response.status === 403) {
+            // Handle 403 (Forbidden) for admin endpoint
+            console.log('User is not an admin');
+            userData = { ...userRes.data.data, role: 'user' };
+          } else {
+            throw adminError;
+          }
+        }
+      } else {
+        userData = { ...userRes.data.data, role: 'user' };
+      }
+
+      console.log('Final UserData:', userData);
+      setUserData(userData);
+    } catch (error: any) {
+      console.error(error.message);
+      toast.error(error.message);
+    }
+  };
 
 
   useEffect(() => {
@@ -79,22 +97,13 @@ const UserProfile: React.FC<UserProfileProps> = ({ params }: UserProfileProps) =
       toast.error(error.message);
     }
   };
-  
-  const [bookedAmbulances, setBookedAmbulances] = useState<Array<any>>([
-    { id: 1, ambulanceType: 'Type A', ambulanceNumber: 'A123', hospital: 'Hospital XYZ' },
-    { id: 2, ambulanceType: 'Type B', ambulanceNumber: 'B456', hospital: 'Hospital ABC' },
-    { id: 3, ambulanceType: 'Type B', ambulanceNumber: 'B456', hospital: 'Hospital ABC' },
-    { id: 4, ambulanceType: 'Type B', ambulanceNumber: 'B456', hospital: 'Hospital ABC' },
-    { id: 5, ambulanceType: 'Type B', ambulanceNumber: 'B456', hospital: 'Hospital ABC' },
-    { id: 6, ambulanceType: 'Type B', ambulanceNumber: 'B456', hospital: 'Hospital ABC' },
-    // Add more dummy data as needed
-  ]);
+
 
   return (
     <>
       <Navbar />
       <div className="flex flex-col items-center justify-center min-h-screen py-8 bg-secondary-color text-white rounded-md gap-10">
-     <h1 className='text-black text-4xl font-bold my-4'>Your Profile</h1>
+        <h1 className='text-black text-4xl font-bold my-4'>Your Profile</h1>
         <div className="flex flex-col items-center justify-center w-1/2 p-4 bg-primary-color  text-black mx-20 rounded-lg shadow-md">
           <h1 className="text-4xl font-bold mb-4">
             Welcome, {userData?.username || 'Guest'}
@@ -118,20 +127,38 @@ const UserProfile: React.FC<UserProfileProps> = ({ params }: UserProfileProps) =
           </button>
         </div>
 
-        {/* Booked Ambulance Box */}
-        <div className="flex flex-col w-1/2 h-[306px] p-4 bg-primary-color text-black mx-20 items-center justify-center rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4">Booked Ambulances </h2>
-          {bookedAmbulances.length > 0 ? (
-            <ul className="list-disc pl-6">
-              {bookedAmbulances.map((ambulance) => (
-                <li key={ambulance.id} className="text-lg mb-2">
-                  {`${ambulance.ambulanceType} - ${ambulance.ambulanceNumber} at ${ambulance.hospital}`}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No ambulances booked.</p>
-          )}
+       {/* Booked Ambulance Box */}
+<div className="flex flex-col p-4 bg-primary-color text-black mx-20 items-center justify-center rounded-lg shadow-md gap-3">
+  <h2 className="text-2xl font-bold mb-4">Booked Ambulances </h2>
+  <div className='flex flex-wrap gap-5 items-center justify-center'>
+    {bookedAmbulances.length > 0 ? (
+      bookedAmbulances.map((ambulance) => (
+        <div key={ambulance._id} className="bg-white p-4 rounded-md shadow-md mb-4">
+          <div className="flex flex-col">
+            <span className="font-bold">Ambulance Type:</span> {ambulance.ambulanceId}
+          </div>
+          <div className="flex flex-col mt-2">
+            <span className="font-bold">Patient Name:</span> {ambulance.patientName}
+          </div>
+          <div className="flex flex-col mt-2">
+            <span className="font-bold">Pickup Location:</span> {ambulance.pickupLocation}
+          </div>
+          <div className="flex flex-col mt-2">
+            <span className="font-bold">Destination:</span> {ambulance.destination}
+          </div>
+          <div className="flex flex-col mt-2">
+            <span className="font-bold">Booking Date:</span> {new Date(ambulance.bookingDate).toLocaleString()}
+          </div>
+          {/* Add more key-value pairs as needed */}
+        </div>
+      ))
+    ) : (
+      <p className="text-lg text-center col-span-full">No ambulances booked.</p>
+    )}
+  </div>
+
+
+
         </div>
       </div>
 

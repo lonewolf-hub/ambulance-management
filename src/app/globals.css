@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #D0A2F7; /* Track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D0A2F7; /* Thumb color */
+  border-radius: 5px; /* Border radius of the thumb */
+  border: 2px solid #E5D4FF; /* Border color of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E5D4FF; /* Thumb color on hover */
+}
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -33,3 +50,32 @@
     background: #EE9B8D;
   }
   
+  /* Add this CSS to your styles (you can include it in your existing styles file) */
+/* ServicesComponent.module.css */
+.serviceCard {
+  padding: 1rem;
+  border: 1px solid #1E40AF;
+  border-radius: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+.serviceCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.2);
+  background-color: #E5E7EB;
+}
+
+.additionalSection {
+  padding: 1rem;
+  border: 1px solid #1E40AF;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+.additionalSection:hover {
+  box-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.2);
+}
+
