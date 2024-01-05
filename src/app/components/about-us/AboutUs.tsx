@@ -8,7 +8,7 @@ const AboutUsComponent: React.FC = () => {
         {/* Banner Section */}
         <div className="relative mb-8">
           <img
-            // src="/assets/icon/aboutusgif.gif"
+            src="/assets/icon/ambulance.png"
             alt="About Us"
             className="w-full h-auto"
           />
@@ -23,8 +23,8 @@ const AboutUsComponent: React.FC = () => {
         {/* Description Section */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold mb-2">Who We Are</h2>
-          <p className="text-gray-800">
-            At [Your Company Name], we are dedicated to providing swift and efficient ambulance services. With years of experience, we understand the importance of timely and professional medical transportation.
+          <p className="text-black">
+            This is shakti the sexy boy, we are dedicated to providing swift and efficient ambulance services. With years of experience, we understand the importance of timely and professional medical transportation.
           </p>
         </div>
 
